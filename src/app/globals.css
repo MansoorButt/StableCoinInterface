@@ -2,26 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.2);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.8);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+@layer base {
+  [data-rk] {
+    --rk-blurs-modalOverlay: blur(8px);
+    --rk-overlay-backdrop-filter: blur(8px);
+    --rk-fonts-body: var(--font-inter);
+    --rk-modal-zIndex: 100;
+    --rk-overlay-zIndex: 99;
+  }
+}
+
+/* Ensure modal is properly positioned */
+[data-rk] .rk-modal-container {
+  position: fixed !important;
+  z-index: var(--rk-modal-zIndex) !important;
+}
+
+[data-rk] .rk-modal-overlay {
+  z-index: var(--rk-overlay-zIndex) !important;
+  backdrop-filter: var(--rk-overlay-backdrop-filter);
+}
+
+@layer utilities {
+  .backdrop-blur-sm {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+/* Ensure wallet nav is always visible */
+[data-rk] .wallet-nav {
+  z-index: 60;
 }
